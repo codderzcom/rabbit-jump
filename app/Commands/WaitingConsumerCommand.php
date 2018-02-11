@@ -57,7 +57,7 @@ class WaitingConsumerCommand extends BaseRJCommand
 
     protected function consumeMessage(AMQPChannel $channel, \Closure $callback): void
     {
-        $channel->basic_consume('hello', '', false, true, false, false, $callback);
+        $channel->basic_consume($this->queue['name'], '', false, true, false, false, $callback);
     }
 
 

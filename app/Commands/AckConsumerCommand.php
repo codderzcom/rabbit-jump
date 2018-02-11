@@ -17,7 +17,7 @@ class AckConsumerCommand extends WaitingConsumerCommand
 
     protected function consumeMessage(AMQPChannel $channel, \Closure $callback): void
     {
-        $channel->basic_consume('hello', '', false, false, false, false, $callback);
+        $channel->basic_consume($this->queue['name'], '', false, false, false, false, $callback);
     }
 
     protected function done(AMQPMessage $msg): void

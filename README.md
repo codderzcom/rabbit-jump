@@ -173,4 +173,4 @@
 
 См. классы `AckConsumerCommand`, `GeneratingProducerCommand`. 
 
-#Задание 5.
+#Задание 5. Durable. 

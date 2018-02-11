@@ -2,6 +2,7 @@
 
 namespace RabbitJump\Commands;
 
+use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class GeneratingProducerCommand extends BaseRJCommand
@@ -19,14 +20,7 @@ class GeneratingProducerCommand extends BaseRJCommand
     {
         $channel = $this->getChannel();
 
-        $channel->queue_declare(
-            $this->queue['name'],
-            $this->queue['passive'],
-            $this->queue['durable'],
-            $this->queue['exclusive'],
-            $this->queue['auto_delete']
-        );
-
+        $this->connectToQueue($channel);
 
         $delay = $params['delay'] ?? 1;
 
@@ -35,13 +29,13 @@ class GeneratingProducerCommand extends BaseRJCommand
         while (\TRUE) {
             $message = ($params['m'] ?? 'Hello World!') . ' at ' . (new \DateTime())->format('H:i:s.u');
 
-            if($useRandomDelayPayload) {
+            if ($useRandomDelayPayload) {
                 $message .= ' d:' . \rand(1, 10);
             }
 
-            $msg = new AMQPMessage($message );
+            $msg = $this->generateMessage($message);
 
-            $channel->basic_publish($msg, '', 'hello');
+            $channel->basic_publish($msg, '', $this->queue['name']);
 
             $this->content = " [✔] Sent '$message'\n";
 
@@ -51,6 +45,23 @@ class GeneratingProducerCommand extends BaseRJCommand
         }
 
         $this->freeChannel($channel);
+    }
+
+
+    protected function connectToQueue(AMQPChannel $channel): void
+    {
+        $channel->queue_declare(
+            $this->queue['name'],
+            $this->queue['passive'],
+            $this->queue['durable'],
+            $this->queue['exclusive'],
+            $this->queue['auto_delete']
+        );
+    }
+
+    protected function generateMessage(string $message): AMQPMessage
+    {
+        return new AMQPMessage($message);
     }
 
 }
