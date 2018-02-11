@@ -4,18 +4,23 @@ namespace RabbitJump\Commands;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 
-abstract class BaseExchangerConsumerCommand extends WaitingConsumerCommand
+class DirectConsumerCommand extends BaseExchangerConsumerCommand
 {
-
     protected $exchanger = [
-        'name' => 'basic',
-        'type' => 'fanout',
+        'name' => 'directed',
+        'type' => 'direct',
         'passive' => false,
         'durable' => false,
         'auto_delete' => false,
     ];
-
     protected $queueName;
+    protected $params = [];
+
+    public function run(array $params): void
+    {
+        $this->params = $params;
+        parent::run($params);
+    }
 
     protected function connectToQueue(AMQPChannel $channel): void
     {
@@ -27,11 +32,12 @@ abstract class BaseExchangerConsumerCommand extends WaitingConsumerCommand
             $this->exchanger['auto_delete']
         );
         list($this->queueName, ,) = $channel->queue_declare("");
-        $channel->queue_bind($this->queueName, $this->exchanger['name']);
+        $channel->queue_bind($this->queueName, $this->exchanger['name'], $this->getRoutingKey());
     }
 
-    protected function consumeMessage(AMQPChannel $channel, \Closure $callback): void
+    protected function getRoutingKey(): string
     {
-        $channel->basic_consume($this->queueName, '', false, true, false, false, $callback);
+        return $this->params['rk'] ?? 'default';
     }
+
 }
