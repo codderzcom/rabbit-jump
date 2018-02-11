@@ -257,5 +257,8 @@
 1. В нескольких консолях: `php index.php -c direct_consumer -p rk=ключ` - с разными ключами.
 1. В другой консоли запускать: `php index.php -c direct_producer -p rk=ключ` - с разными ключами.
 1. Допускается подключать несколько очередей с одинаковым ключом.
+1. Допускается подключать очередь к нескольким ключам (`php index.php -c direct_consumer -p rk=ключ1 -p rk=ключ2`).
 
 См. классы `DirectConsumerCommand`, `DirectProducerCommand`
+
+#Задание 9. Параметризованная подписка.

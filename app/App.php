@@ -83,7 +83,15 @@ class App
             if(2 !== count($param)) {
                 continue;
             }
-            $params[$param[0]] = $param[1];
+            if(!\array_key_exists($param[0], $params)) {
+                $params[$param[0]] = $param[1];
+            } else {
+                if(\is_array($params[$param[0]])) {
+                    $params[$param[0]][] = $param[1];
+                } else {
+                    $params[$param[0]] = [$params[$param[0]], $param[1]];
+                }
+            }
         }
         return $params;
     }

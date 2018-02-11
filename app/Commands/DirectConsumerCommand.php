@@ -32,12 +32,17 @@ class DirectConsumerCommand extends BaseExchangerConsumerCommand
             $this->exchanger['auto_delete']
         );
         list($this->queueName, ,) = $channel->queue_declare("");
-        $channel->queue_bind($this->queueName, $this->exchanger['name'], $this->getRoutingKey());
+        foreach ($this->getRoutingKeys() as $key) {
+            $channel->queue_bind($this->queueName, $this->exchanger['name'], $key);
+        }
     }
 
-    protected function getRoutingKey(): string
+    protected function getRoutingKeys(): array
     {
-        return $this->params['rk'] ?? 'default';
+        if(\array_key_exists('rk', $this->params)) {
+            return \is_array($this->params['rk']) ? $this->params['rk'] : [$this->params['rk']];
+        }
+        return ['default'];
     }
 
 }
