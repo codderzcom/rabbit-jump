@@ -1,6 +1,7 @@
 <?php
 
 namespace RabbitJump\Commands;
+
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 

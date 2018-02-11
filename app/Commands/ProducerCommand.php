@@ -2,7 +2,6 @@
 
 namespace RabbitJump\Commands;
 
-
 use PhpAmqpLib\Message\AMQPMessage;
 
 class ProducerCommand extends BaseRJCommand

@@ -1,6 +1,7 @@
 <?php
 
 namespace RabbitJump\Commands;
+
 use PhpAmqpLib\Message\AMQPMessage;
 
 class ConsumerCommand extends BaseRJCommand
@@ -16,8 +17,8 @@ class ConsumerCommand extends BaseRJCommand
 
         /** @var AMQPMessage $msg */
         $msg = $channel->basic_get('hello');
-        if($msg) {
-            echo " [✔] Received '" . $msg->body ."'\n";
+        if ($msg) {
+            echo " [✔] Received '" . $msg->body . "'\n";
             $channel->basic_ack($msg->delivery_info['delivery_tag']);
         } else {
             echo " [✖] No pending messages. \n";

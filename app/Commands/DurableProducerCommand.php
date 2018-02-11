@@ -15,8 +15,8 @@ class DurableProducerCommand extends GeneratingProducerCommand
         'auto_delete' => false,
     ];
 
-    protected function generateMessage(string $message): AMQPMessage
+    protected function generateMessage(array $params): AMQPMessage
     {
-        return new AMQPMessage($message, ['delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT]);
+        return new AMQPMessage($this->generateMessageBody($params), ['delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT]);
     }
 }

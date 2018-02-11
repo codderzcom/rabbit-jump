@@ -28,7 +28,7 @@ abstract class BaseRJCommand implements AppAwareInterface
 
     protected function getChannel(int $id = null): AMQPChannel
     {
-        if(!$this->connection) {
+        if (!$this->connection) {
             $this->openConnection();
         }
         $channel = $this->connection->channel($id);
@@ -42,14 +42,14 @@ abstract class BaseRJCommand implements AppAwareInterface
     {
         unset($this->channels[$channel->getChannelId()]);
         $channel->close();
-        if(0 === \count($this->channels)) {
+        if (0 === \count($this->channels)) {
             $this->closeConnection();
         }
     }
 
-    protected function openConnection() : void
+    protected function openConnection(): void
     {
-        if($this->connection && $this->connection->isConnected()) {
+        if ($this->connection && $this->connection->isConnected()) {
             $this->connection->reconnect();
         }
 
@@ -63,7 +63,7 @@ abstract class BaseRJCommand implements AppAwareInterface
 
     protected function closeConnection(): void
     {
-        if($this->connection && $this->connection->isConnected()) {
+        if ($this->connection && $this->connection->isConnected()) {
             try {
                 $this->connection->close();
             } catch (AMQPRuntimeException $exception) {

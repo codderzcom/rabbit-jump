@@ -1,6 +1,7 @@
 <?php
 
 namespace RabbitJump\Commands;
+
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -30,7 +31,7 @@ class WaitingConsumerCommand extends BaseRJCommand
 
         $this->consumeMessage($channel, $consumer);
 
-        while(count($channel->callbacks)) {
+        while (count($channel->callbacks)) {
             $channel->wait();
         }
     }
@@ -48,7 +49,7 @@ class WaitingConsumerCommand extends BaseRJCommand
 
     protected function createConsumer(int $delay): \Closure
     {
-        return function($msg) use ($delay) {
+        return function ($msg) use ($delay) {
             $this->receive($msg);
             $this->delay($msg, $delay);
             $this->done($msg);
@@ -66,7 +67,7 @@ class WaitingConsumerCommand extends BaseRJCommand
         $reg = '/.*?\s(d:[0-9]+)$/';
         $matches = [];
         \preg_match($reg, $message, $matches);
-        if(2 !== count($matches)) {
+        if (2 !== count($matches)) {
             return 0;
         }
 
@@ -77,14 +78,14 @@ class WaitingConsumerCommand extends BaseRJCommand
     {
         $message = $msg->getBody();
         $time = (new \DateTime())->format('H:i:s.u');
-        $this->content = " [•] Received '" . $message . "' on $time.\n" ;
+        $this->content = " [•] Received '" . $message . "' on $time.\n";
         $this->render();
     }
 
     protected function delay(AMQPMessage $msg, int $delay): void
     {
         $delay = $delay ?: $this->getDelayFromMessage($msg->getBody());
-        if($delay > 0) {
+        if ($delay > 0) {
             sleep($delay);
         }
     }
@@ -92,7 +93,7 @@ class WaitingConsumerCommand extends BaseRJCommand
     protected function done(AMQPMessage $msg): void
     {
         $time = (new \DateTime())->format('H:i:s.u');
-        $this->content = " [✔] Done at $time. Waiting.\n" ;
+        $this->content = " [✔] Done at $time. Waiting.\n";
         $this->render();
     }
 

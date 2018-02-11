@@ -24,20 +24,12 @@ class GeneratingProducerCommand extends BaseRJCommand
 
         $delay = $params['delay'] ?? 1;
 
-        $useRandomDelayPayload = $params['rd'] ?? false;
-
         while (\TRUE) {
-            $message = ($params['m'] ?? 'Hello World!') . ' at ' . (new \DateTime())->format('H:i:s.u');
+            $msg = $this->generateMessage($params);
 
-            if ($useRandomDelayPayload) {
-                $message .= ' d:' . \rand(1, 10);
-            }
+            $this->publishMessage($channel, $msg);
 
-            $msg = $this->generateMessage($message);
-
-            $channel->basic_publish($msg, '', $this->queue['name']);
-
-            $this->content = " [✔] Sent '$message'\n";
+            $this->content = " [✔] Sent '" . $msg->getBody() . "'\n";
 
             $this->render();
 
@@ -59,9 +51,27 @@ class GeneratingProducerCommand extends BaseRJCommand
         );
     }
 
-    protected function generateMessage(string $message): AMQPMessage
+    protected function generateMessageBody(array $params): string
     {
-        return new AMQPMessage($message);
+        $useRandomDelayPayload = $params['rd'] ?? false;
+
+        $message = ($params['m'] ?? 'Hello World!') . ' at ' . (new \DateTime())->format('H:i:s.u');
+
+        if ($useRandomDelayPayload) {
+            $message .= ' d:' . \rand(1, 10);
+        }
+
+        return $message;
+    }
+
+    protected function generateMessage(array $params): AMQPMessage
+    {
+        return new AMQPMessage($this->generateMessageBody($params));
+    }
+
+    protected function publishMessage(AMQPChannel $channel, AMQPMessage $msg): void
+    {
+        $channel->basic_publish($msg, '', $this->queue['name']);
     }
 
 }
