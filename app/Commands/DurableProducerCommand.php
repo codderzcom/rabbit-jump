@@ -6,7 +6,7 @@ class DurableProducerCommand extends GeneratingProducerCommand
 {
 
     protected $queue = [
-        'name' => 'hello',
+        'name' => 'durable_hello',
         'passive' => false,
         'durable' => true,
         'exclusive' => false,

@@ -11,7 +11,7 @@ class ConsumerCommand extends BaseRJCommand
 
         $channel->queue_declare('hello', false, false, false, false);
 
-        $this->content = " [*] Consuming one pendig message. \n";
+        $this->content = " [*] Consuming one pending message. \n";
         $this->render();
 
         /** @var AMQPMessage $msg */
