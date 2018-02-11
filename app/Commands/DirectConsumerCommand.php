@@ -3,6 +3,7 @@
 namespace RabbitJump\Commands;
 
 use PhpAmqpLib\Channel\AMQPChannel;
+use PhpAmqpLib\Message\AMQPMessage;
 
 class DirectConsumerCommand extends BaseExchangerConsumerCommand
 {
@@ -45,4 +46,11 @@ class DirectConsumerCommand extends BaseExchangerConsumerCommand
         return ['default'];
     }
 
+    protected function receive(AMQPMessage $msg): void
+    {
+        $message = $msg->getBody();
+        $time = (new \DateTime())->format('H:i:s.u');
+        $this->content = " [•] Received '" . $message . "' on $time. With key: '" . $msg->delivery_info['routing_key'] . "'\n";
+        $this->render();
+    }
 }
