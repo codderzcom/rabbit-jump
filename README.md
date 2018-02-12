@@ -5,7 +5,9 @@
 1. [php-amqplib](https://github.com/php-amqplib/php-amqplib)
 1. [Reliable messaging with RabbitMQ (video)](https://www.youtube.com/watch?v=XjuiZM7JzPw)
 
-## Небольшой док: https://docs.google.com/presentation/d/14u9XfsnopbsF8aIhBqsYuiIEKidsgMo4Q_JZG7u3L7A/edit?usp=sharing
+## Небольшой док: 
+
+https://docs.google.com/presentation/d/14u9XfsnopbsF8aIhBqsYuiIEKidsgMo4Q_JZG7u3L7A/edit?usp=sharing
 
 \* - основные.
 
