@@ -1,14 +1,15 @@
 # RabbitJump
 
-## Основные источники*
+Вспомогательные материалы для изучения RabbitMQ (при работе в php): примеры кода, консольные команды генерации и потребления сообщений для демонстрации работы очередей и обменников RabbitMQ, задания для самостоятельного изучения. 
+
+## Основные источники
 1. [RabbitMQ Tutorial](https://www.rabbitmq.com/getstarted.html)
 1. [php-amqplib](https://github.com/php-amqplib/php-amqplib)
 1. [Reliable messaging with RabbitMQ (video)](https://www.youtube.com/watch?v=XjuiZM7JzPw)
 
-\* - основные.
-
 ## Небольшой док: 
 
+Термины, описание работы RabbitMQ, ограничения и т.п.
 https://docs.google.com/presentation/d/14u9XfsnopbsF8aIhBqsYuiIEKidsgMo4Q_JZG7u3L7A/edit?usp=sharing
 
 ## Установка
